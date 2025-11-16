@@ -31,11 +31,19 @@ rm -rf node_modules package-lock.json
 # 2. Install Node.js dependencies with legacy peer deps flag
 npm install --legacy-peer-deps
 
-# 3. Install Python backend dependencies
+# 3. Create Python virtual environment and install backend dependencies
 cd backend
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+deactivate
 cd ..
 ```
+
+**Why use a virtual environment?**
+- Modern Python installations (PEP 668) prevent system-wide package installations to avoid conflicts
+- Virtual environments keep dependencies isolated and prevent "externally-managed-environment" errors
+- The Electron app automatically detects and uses the `.venv` directory if it exists
 
 **Optional**: To make the `--legacy-peer-deps` flag permanent for this project:
 ```bash
@@ -58,6 +66,8 @@ If you're running on WSL:
 
 ### Running in Development Mode
 
+The Electron app automatically detects and uses the Python virtual environment in `backend/.venv` if it exists. You don't need to manually activate the venv before running Electron.
+
 1. Build the frontend:
    ```bash
    npm run build
@@ -70,8 +80,11 @@ If you're running on WSL:
 
 This will:
 - Build the SvelteKit frontend
+- Automatically use the Python virtual environment (if `backend/.venv` exists)
 - Start the Python backend server on localhost:8080
 - Open the Electron window
+
+**Note**: If you haven't created the virtual environment yet, the app will try to use system Python, which may fail on systems with PEP 668 protection. See the [Installation](#installation) section for venv setup.
 
 ### Quick Development Start
 
@@ -175,6 +188,23 @@ This error occurs when npm dependencies are not properly installed. Fix it by:
 rm -rf node_modules package-lock.json
 npm install --legacy-peer-deps
 ```
+
+### "externally-managed-environment" Error (Python)
+
+This error occurs on modern Python installations (PEP 668) that prevent system-wide package installations. Fix it by using a virtual environment:
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+deactivate
+cd ..
+```
+
+The Electron app will automatically detect and use the `.venv` directory when starting the backend.
+
+**Do NOT use `--break-system-packages`** as it can cause conflicts with your system Python installation.
 
 ### Peer Dependency Conflicts
 
