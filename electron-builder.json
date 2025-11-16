@@ -7,8 +7,8 @@
     "buildResources": "build-resources"
   },
   "files": [
-    "electron-main.js",
-    "electron-preload.js",
+    "electron-main.cjs",
+    "electron-preload.cjs",
     "package.json",
     "build/**/*",
     "backend/**/*",
