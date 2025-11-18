@@ -147,6 +147,19 @@ function createWindow() {
       fs.mkdirSync(options.env.DATA_DIR, { recursive: true });
     }
 
+    // Automatically detect and use Python virtual environment if it exists
+    const venvBinDir = process.platform === 'win32'
+      ? path.join(backendDir, '.venv', 'Scripts')
+      : path.join(backendDir, '.venv', 'bin');
+    
+    if (fs.existsSync(venvBinDir)) {
+      console.log('Detected Python virtual environment at:', venvBinDir);
+      // Prepend venv bin directory to PATH so Python commands use the venv
+      options.env.PATH = `${venvBinDir}${path.delimiter}${options.env.PATH}`;
+    } else {
+      console.log('No virtual environment detected. Using system Python.');
+    }
+
     if (process.platform === 'win32') {
       if (fs.existsSync(startScriptWindows)) {
         command = startScriptWindows;
