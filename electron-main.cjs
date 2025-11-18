@@ -42,14 +42,6 @@ function createWindow() {
       label: 'File',
       submenu: [
         {
-          label: 'New Chat',
-          accelerator: 'CmdOrCtrl+N',
-          click: () => {
-            mainWindow.webContents.send('new-chat');
-          }
-        },
-        { type: 'separator' },
-        {
           label: 'Quit',
           accelerator: 'CmdOrCtrl+Q',
           click: () => {
@@ -132,7 +124,7 @@ function createWindow() {
     });
 }
 
-function startBackend() {
+  function startBackend() {
   return new Promise((resolve, reject) => {
     const backendDir = path.join(__dirname, 'backend');
     const startScript = path.join(backendDir, 'start.sh');
@@ -143,10 +135,10 @@ function startBackend() {
     let options = {
       cwd: backendDir,
       env: {
-        ...process.env,
-        PORT: BACKEND_PORT.toString(),
-        HOST: BACKEND_HOST,
-        WEBUI_SECRET_KEY: process.env.WEBUI_SECRET_KEY || '',
+      ...process.env,
+      PORT: BACKEND_PORT.toString(),
+      HOST: BACKEND_HOST,
+      WEBUI_SECRET_KEY: process.env.WEBUI_SECRET_KEY || '',
         DATA_DIR: path.join(app.getPath('userData'), 'data')
       }
     };
@@ -245,7 +237,7 @@ function stopBackend() {
 
 app.whenReady().then(async () => {
   try {
-    await startBackend();
+    // await startBackend();
     createWindow();
   } catch (err) {
     console.error('Failed to initialize app:', err);

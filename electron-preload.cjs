@@ -1,13 +1,3 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('electronAPI', {
-  platform: process.platform,
-  versions: {
-    node: process.versions.node,
-    chrome: process.versions.chrome,
-    electron: process.versions.electron
-  },
-  onNewChat: (callback) => {
-    ipcRenderer.on('new-chat', callback);
-  }
-});
+// Do not use preload for now
