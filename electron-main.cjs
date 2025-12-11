@@ -140,7 +140,8 @@ function createWindow() {
       HOST: BACKEND_HOST,
       WEBUI_SECRET_KEY: process.env.WEBUI_SECRET_KEY || '',
         DATA_DIR: path.join(app.getPath('userData'), 'data')
-      }
+      },
+      shell: true 
     };
 
     if (!fs.existsSync(options.env.DATA_DIR)) {
@@ -250,7 +251,7 @@ function stopBackend() {
 
 app.whenReady().then(async () => {
   try {
-    // await startBackend();
+    await startBackend();
     createWindow();
   } catch (err) {
     console.error('Failed to initialize app:', err);
